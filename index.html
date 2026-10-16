@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Climate Anomaly</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Climate Anomaly computes rainfall and temperature anomaly indices (RAI, MRAI, SRAI, SSPI, SPI, z-score, deviation and percentage departure) from your own climate data, with a baseline period of your choice.">
@@ -47,7 +52,7 @@
 img{max-width:100%}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
 a{color:var(--accent)}
 a:hover{color:var(--accent-2)}
@@ -223,6 +228,7 @@ main{min-height:60vh}
 .field .req{color:var(--bad);font-weight:500}
 select,input[type="number"],input[type="text"],input[type="search"]{font:400 14.5px/1.2 var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:8px;padding:10px 12px;width:100%;min-width:0}
 select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 52%,calc(100% - 12px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+select:disabled{opacity:.55;cursor:not-allowed}
 select:focus,input:focus{outline:2px solid color-mix(in oklab,var(--accent) 45%,transparent);outline-offset:0;border-color:var(--accent)}
 .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
@@ -408,13 +414,18 @@ details.adv .adv-body{padding-bottom:16px;display:grid;gap:16px}
 .inst p{font-size:14px;color:var(--ink-2);margin-top:4px}
 
 footer{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--muted);font-size:13px}
-footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px 16px;flex-wrap:wrap}
+.visitors{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
+.visitors svg{width:16px;height:16px;color:var(--accent)}
+.visitors b{color:var(--ink);font-weight:600}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--surface);padding:11px 18px;border-radius:999px;font-size:14px;z-index:90;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100vw - 32px)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 .fade-in{animation:fi .35s ease both}
 @keyframes fi{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
 </style>
 
+</head>
+<body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
@@ -433,6 +444,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
     <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></symbol>
     <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
     <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3.5h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2"/><path d="M7 14h10v6.5H7z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
     <symbol id="i-inst" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10M19 21V10M9 21v-7h6v7M2 10l10-6 10 6"/></symbol>
   </defs>
 </svg>
@@ -611,41 +623,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <div>
           <div class="wb-title"><h2>Match the columns</h2><p>Pick which column holds each item. Likely matches are pre-selected; anything not in your file can stay as "Not in file".</p></div>
           <div class="wb-body">
-            <div class="field">
-              <span class="lbl">File layout</span>
-              <div class="seg" role="group" aria-label="File layout" id="layoutMode">
-                <button type="button" data-v="long" aria-pressed="true">One row per location and time</button>
-                <button type="button" data-v="wide" aria-pressed="false">One column per location</button>
-              </div>
-              <span class="hint" id="layoutHint">Each row holds a location, a time and one or more variables.</span>
-            </div>
             <div class="subhead">Where and when</div>
-            <div class="grid-4">
-              <div class="field" data-layout="long">
+            <div class="grid-3">
+              <div class="field">
                 <label for="mapLoc">Location</label>
                 <select id="mapLoc"></select>
-                <span class="hint">State, district, station, grid… Leave as "Not in file" for a single site.</span>
+                <span class="hint" id="locHint">State, district, station, grid… "Not in file" means a single site.</span>
               </div>
               <div class="field">
-                <span class="lbl">Time is given as</span>
-                <div class="seg" role="group" aria-label="Time format" id="timeMode">
-                  <button type="button" data-v="ym" aria-pressed="true">Year + month</button>
-                  <button type="button" data-v="date" aria-pressed="false">Date column</button>
-                </div>
+                <label for="mapTime">Year or date <span class="req">required</span></label>
+                <select id="mapTime"></select>
+                <span class="hint" id="timeHint">A year column (1998) or a full date column (1998-06-15, 15-06-1998, Jun 1998).</span>
               </div>
-              <div class="field" data-tm="ym">
-                <label for="mapYear">Year <span class="req">required</span></label>
-                <select id="mapYear"></select>
-              </div>
-              <div class="field" data-tm="ym">
+              <div class="field">
                 <label for="mapMonth">Month</label>
                 <select id="mapMonth"></select>
-                <span class="hint">1–12, Jan, January or 2020-01. "Not in file" means annual data.</span>
-              </div>
-              <div class="field" data-tm="date" hidden>
-                <label for="mapDate">Date <span class="req">required</span></label>
-                <select id="mapDate"></select>
-                <span class="hint">2020-06-15, 15-06-2020 (day first), Jun 2020…</span>
+                <span class="hint" id="monthHint">1–12, Jan or January. Leave as "Not in file" for annual data.</span>
               </div>
             </div>
             <div class="subhead">Variables</div>
@@ -653,7 +646,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
               <div class="grid-2">
                 <div class="field"><label for="wideVar">The location columns hold</label>
                   <select id="wideVar"><option value="rain">Rainfall</option><option value="tmax">Maximum temperature</option><option value="tmin">Minimum temperature</option><option value="tavg">Mean temperature</option></select>
-                  <span class="hint">For more than one variable, upload one sheet per variable, or use the one-row-per-location layout.</span>
+                  <span class="hint">For more than one variable, upload one sheet per variable.</span>
                 </div>
               </div>
               <div class="field">
@@ -665,9 +658,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
               <div class="field"><label for="mapRain">Rainfall</label><select id="mapRain"></select></div>
               <div class="field"><label for="mapTmax">Maximum temperature</label><select id="mapTmax"></select></div>
               <div class="field"><label for="mapTmin">Minimum temperature</label><select id="mapTmin"></select></div>
-              <div class="field"><label for="mapTavg">Mean temperature</label><select id="mapTavg"></select>
-                <label class="small" style="display:flex;gap:8px;align-items:center;font-weight:400;color:var(--ink-2)"><input type="checkbox" id="deriveTavg" checked style="accent-color:var(--accent)"> If absent, use (Tmax + Tmin) ÷ 2</label>
-              </div>
+              <div class="field"><label for="mapTavg">Mean temperature</label><select id="mapTavg"></select></div>
             </div>
             <div id="mapStatus"></div>
           </div>
@@ -823,11 +814,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
               <thead><tr><th>Item</th><th>Needed?</th><th>Accepted values</th></tr></thead>
               <tbody>
                 <tr><td>Location</td><td>Optional</td><td>Any text or code (state, district, station, grid ID). Omit for a single site.</td></tr>
-                <tr><td>Year</td><td>Yes*</td><td>Four-digit year, e.g. <code>1998</code></td></tr>
-                <tr><td>Month</td><td>Optional</td><td><code>1</code>–<code>12</code>, <code>Jan</code>, <code>January</code>, <code>1998-01</code>. Omit for annual data.</td></tr>
-                <tr><td>Date</td><td>*Instead of year + month</td><td><code>1998-06-15</code>, <code>15-06-1998</code> or <code>15/06/1998</code> (day first), <code>Jun 1998</code>, Excel dates</td></tr>
+                <tr><td>Year or date</td><td>Yes</td><td>A four-digit year, e.g. <code>1998</code>, or a full date: <code>1998-06-15</code>, <code>15-06-1998</code> or <code>15/06/1998</code> (day first), <code>Jun 1998</code>, Excel dates. A date column also gives the month.</td></tr>
+                <tr><td>Month</td><td>Only with a year column</td><td><code>1</code>–<code>12</code>, <code>Jan</code>, <code>January</code>. Omit for annual data.</td></tr>
+                
                 <tr><td>Rainfall</td><td>At least one variable</td><td>Numeric total for the time step (mm or any unit)</td></tr>
-                <tr><td>Tmax, Tmin, Tavg</td><td>At least one variable</td><td>Numeric, °C. Tavg can be derived as (Tmax + Tmin) ÷ 2.</td></tr>
+                <tr><td>Tmax, Tmin, Tavg</td><td>At least one variable</td><td>Numeric, °C. Each temperature is used only if your file has that column.</td></tr>
               </tbody>
             </table>
           </div>
@@ -842,7 +833,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
               </tbody>
             </table>
           </div>
-          <p><strong>One column per location</strong> (a "wide" file, common for gridded and district datasets) also works: a date or year/month column, then one column of values per location. Choose <em>One column per location</em> in step 2, say which variable the columns hold, and tick the location columns to include.</p>
+          <p><strong>One column per location</strong> (a "wide" file, common for gridded and district datasets) also works: a date or year/month column, then one column of values per location. In Match Columns, set Location to <em>Each location is a separate column</em>, say which variable the columns hold, and tick the location columns to include.</p>
           <p><strong>Daily data</strong> is accepted: when a location has several rows in the same month, rainfall is summed and temperatures are averaged before any index is computed. Check that every month is complete, because a month with missing days will have a lower rainfall total.</p>
           <p><strong>Missing values</strong>: blank cells and <code>NA</code> are always missing. Add your own codes (for example <code>-999</code>) in step 1.</p>
           <div class="row-actions"><button class="btn btn-ghost" type="button" data-template><svg><use href="#i-down"/></svg>Download a blank template (CSV)</button></div>
@@ -853,7 +844,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
           <p>The Model page has four tabs. Work through them in order with the <strong>Next</strong> button at the bottom of each tab, or click a tab to go back and change something.</p>
           <ol>
             <li><strong>Upload Data.</strong> Drop a file on the upload area or choose it. For an Excel workbook with several sheets, pick the sheet. A preview of the first rows appears. The sample dataset is loaded when the page opens, so you can try the model before using your own file.</li>
-            <li><strong>Match Columns.</strong> Choose the file layout, then check the selections for location, year and month (or date) and for each variable. The summary underneath reports how many location-months were read, how many rows were skipped and whether daily rows were combined.</li>
+            <li><strong>Match Columns.</strong> Check the location column (or <em>Each location is a separate column</em>), the year or date column, the month column if there is one, and each variable. The summary underneath reports how many location-months were read, how many rows were skipped and whether daily rows were combined.</li>
             <li><strong>Baseline Period.</strong> Choose the reference years for rainfall and for temperature (see below).</li>
             <li><strong>Indices.</strong> Tick the indices you need and, if required, open Advanced settings to change the number of RAI extremes, the minimum baseline size, the deviation class thresholds or the number of decimals. Press <strong>Compute indices</strong>.</li>
             <li><strong>Results.</strong> The results open on their own page. Use the Location, Month and Index filters to explore the chart, the class frequencies, the baseline climatology and the full table.</li>
@@ -1029,6 +1020,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <footer>
   <div class="wrap">
     <span><b style="color:var(--ink)">Climate Anomaly</b> · ICAR-IASRI, New Delhi · © 2026</span>
+    <span class="visitors" id="visitors" hidden><svg><use href="#i-eye"/></svg><span>Total visitors: <b id="visitorCount" class="tnum">—</b></span></span>
     <span>All computation runs in your browser.</span>
   </div>
 </footer>
@@ -5338,7 +5330,7 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     setFileStatus(`<div class="file-meta">${opts && opts.sample ? '<span class="pill" style="background:var(--accent-soft);color:var(--accent)">Sample data</span>' : ''}<span class="pill"><b>${esc(name)}</b></span><span class="pill"><b>${rows.length.toLocaleString()}</b> rows</span><span class="pill"><b>${headers.length}</b> columns</span></div>`);
     renderPreview();
     const g = guessMap(headers);
-    refineGuess(g, headers, rows);
+    S.rows = rows; refineGuess(g, headers);
     S.map = g;
     fillMapSelects();
     S.base.rain.mode = S.base.temp.mode = 'full';
@@ -5365,31 +5357,33 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     m.tmax = find([/^(tmax|t_max|tx|maxt|max_?temp|temp_?max|tmax_?c|maximum_?temperature)$/, /tmax|t_max|max.?temp|temp.?max|maximum.?temp/], /peak|abs|flag|anom|high_?est|record/);
     m.tmin = find([/^(tmin|t_min|tn|mint|min_?temp|temp_?min|tmin_?c|minimum_?temperature)$/, /tmin|t_min|min.?temp|temp.?min|minimum.?temp/], /low|abs|flag|anom|record/);
     m.tavg = find([/^(tavg|t_avg|tmean|t_mean|avg_?temp|mean_?temp|temp_?mean|temp_?avg|t2m|temperature|temp|tavg_?c)$/, /tavg|tmean|t_mean|mean.?temp|avg.?temp|average.?temp/], /max|min|anom|flag/);
-    m.timeMode = (!m.year && m.date) ? 'date' : 'ym';
-    if (m.timeMode === 'ym') m.date = m.date || '';
-    m.deriveTavg = true;
+    m.time = m.year || m.date || '';
     return m;
   }
-  function refineGuess(m, headers, rows) {
-    const nonEmpty = h => { const out = []; for (let i = 0; i < rows.length && out.length < 60; i++) { const v = rows[i][h]; if (v !== '' && v != null) out.push(v); } return out; };
-    const isDateCol = h => { const vs = nonEmpty(h); if (!vs.length) return false; let ok = 0; for (const v of vs) { const d = E.parseDate(v); if (d.y >= 1600 && d.y <= 2200 && d.m >= 1 && d.m <= 12) ok++; } return ok / vs.length > 0.8; };
+  const LOC_COLS = '__columns__';
+  function nonEmptyVals(h) { const out = [], rows = S.rows; for (let i = 0; i < rows.length && out.length < 60; i++) { const v = rows[i][h]; if (v !== '' && v != null) out.push(v); } return out; }
+  function colIsDate(h) {
+    if (!h) return false;
+    const vs = nonEmptyVals(h); if (!vs.length) return false;
+    let ok = 0; for (const v of vs) { const d = E.parseDate(v); if (d.y >= 1600 && d.y <= 2200 && d.m >= 1 && d.m <= 12) ok++; }
+    return ok / vs.length > 0.8;
+  }
+  function refineGuess(m, headers) {
     const miss = E.makeMissingSet('');
-    const isNumCol = h => { const vs = nonEmpty(h); if (!vs.length) return false; let ok = 0; for (const v of vs) if (isFinite(E.toNum(v, miss))) ok++; return ok / vs.length > 0.8; };
+    const isNumCol = h => { const vs = nonEmptyVals(h); if (!vs.length) return false; let ok = 0; for (const v of vs) if (isFinite(E.toNum(v, miss))) ok++; return ok / vs.length > 0.8; };
     if (!m.year) {
-      const cand = [m.date, m.month].find(h => h && isDateCol(h)) || headers.find(isDateCol);
-      if (cand) { m.timeMode = 'date'; m.date = cand; }
+      const cand = [m.date, m.month].find(h => h && colIsDate(h)) || headers.find(colIsDate);
+      if (cand) m.time = cand;
     }
-    const timeCols = new Set([m.timeMode === 'date' ? m.date : '', m.timeMode === 'ym' ? m.year : '', m.timeMode === 'ym' ? m.month : ''].filter(Boolean));
+    if (colIsDate(m.time)) m.month = '';
+    const timeCols = new Set([m.time, m.month].filter(Boolean));
     const numCols = headers.filter(h => !timeCols.has(h) && isNumCol(h) && !/^(year|yr|month|mon|day|doy|date)$/i.test(h.trim()));
-    m.layout = (!m.loc && !(m.rain || m.tmax || m.tmin || m.tavg) && numCols.length >= 2) ? 'wide' : 'long';
+    if (!m.loc && !(m.rain || m.tmax || m.tmin || m.tavg) && numCols.length >= 2) m.loc = LOC_COLS;
     m.wideCols = numCols;
     const lcName = (S.fileName || '').toLowerCase();
     m.wideVar = /tmax|max.?temp/.test(lcName) ? 'tmax' : /tmin|min.?temp/.test(lcName) ? 'tmin' : /temp|tavg|tmean/.test(lcName) ? 'tavg' : 'rain';
   }
-  function timeColsNow() {
-    const m = S.map;
-    return new Set(m.timeMode === 'date' ? [m.date] : [m.year, m.month].filter(Boolean));
-  }
+  function timeColsNow() { return new Set([S.map.time, S.map.month].filter(Boolean)); }
   function renderWidePicker() {
     const tc = timeColsNow(), sel = new Set(S.map.wideCols || []);
     const cols = S.headers.filter(h => !tc.has(h));
@@ -5397,39 +5391,43 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     updateWideCount();
   }
   function updateWideCount() { $('#wideCount').textContent = $$('#wideCols input:checked').length + ' selected'; }
-  function setLayout(v) {
-    S.map.layout = v;
-    $$('#layoutMode button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v ? 'true' : 'false'));
-    $$('[data-layout]').forEach(el => el.hidden = el.dataset.layout !== v);
-    $('#layoutHint').textContent = v === 'wide'
-      ? 'The first column(s) hold the time; every other selected column is one location (station, district, grid cell) with values of one variable.'
-      : 'Each row holds a location, a time and one or more variables.';
-    if (v === 'wide') renderWidePicker();
+  function applyMapUI() {
+    const wide = $('#mapLoc').value === LOC_COLS;
+    $$('[data-layout]').forEach(el => el.hidden = el.dataset.layout !== (wide ? 'wide' : 'long'));
+    const t = $('#mapTime').value, isDate = colIsDate(t), mo = $('#mapMonth');
+    mo.disabled = isDate; if (isDate) mo.value = '';
+    $('#timeHint').textContent = !t ? 'A year column (1998) or a full date column (1998-06-15, 15-06-1998, Jun 1998).'
+      : isDate ? 'Read as dates: the year and month both come from this column.' : 'Read as years.';
+    $('#monthHint').textContent = isDate ? 'Not needed: the month is read from the date.' : '1–12, Jan or January. Leave as "Not in file" for annual data.';
+    $('#locHint').textContent = wide ? 'Each selected column below is one location (station, district, grid cell).' : 'State, district, station, grid… "Not in file" means a single site.';
   }
-  const MAP_SELECTS = { loc: '#mapLoc', year: '#mapYear', month: '#mapMonth', date: '#mapDate', rain: '#mapRain', tmax: '#mapTmax', tmin: '#mapTmin', tavg: '#mapTavg' };
+  const MAP_SELECTS = { loc: '#mapLoc', time: '#mapTime', month: '#mapMonth', rain: '#mapRain', tmax: '#mapTmax', tmin: '#mapTmin', tavg: '#mapTavg' };
   function fillMapSelects() {
+    const opts = S.headers.map(h => `<option value="${esc(h)}">${esc(h)}</option>`).join('');
     for (const [k, sel] of Object.entries(MAP_SELECTS)) {
       const el = $(sel);
-      el.innerHTML = `<option value="">Not in file</option>` + S.headers.map(h => `<option value="${esc(h)}">${esc(h)}</option>`).join('');
+      el.innerHTML = k === 'loc'
+        ? `<option value="">Not in file (single site)</option><option value="${LOC_COLS}">Each location is a separate column</option>` + opts
+        : `<option value="">Not in file</option>` + opts;
       el.value = S.map[k] || '';
     }
-    $('#deriveTavg').checked = S.map.deriveTavg !== false;
     $('#wideVar').value = S.map.wideVar || 'rain';
-    setTimeMode(S.map.timeMode);
-    setLayout(S.map.layout || 'long');
-  }
-  function setTimeMode(v) {
-    S.map.timeMode = v;
-    $$('#timeMode button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v ? 'true' : 'false'));
-    $$('[data-tm]').forEach(el => el.hidden = el.dataset.tm !== v);
+    applyMapUI();
+    if (S.map.loc === LOC_COLS) renderWidePicker();
   }
   function readMap() {
     for (const [k, sel] of Object.entries(MAP_SELECTS)) S.map[k] = $(sel).value;
-    S.map.deriveTavg = $('#deriveTavg').checked;
-    S.map.wideVar = $('#wideVar').value;
-    if (S.map.layout === 'wide') {
+    const m = S.map, isDate = colIsDate(m.time);
+    m.layout = m.loc === LOC_COLS ? 'wide' : 'long';
+    m.timeMode = isDate ? 'date' : 'ym';
+    m.year = isDate ? '' : m.time;
+    m.date = isDate ? m.time : '';
+    if (isDate) m.month = '';
+    m.deriveTavg = false;
+    m.wideVar = $('#wideVar').value;
+    if (m.layout === 'wide') {
       const tc = timeColsNow();
-      S.map.wideCols = $$('#wideCols input:checked').map(i => i.value).filter(h => !tc.has(h));
+      m.wideCols = $$('#wideCols input:checked').map(i => i.value).filter(h => !tc.has(h));
     }
   }
   function rebuild(fresh) {
@@ -5437,8 +5435,7 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     readMap();
     const m = S.map, msgs = [];
     let ok = true;
-    if (m.timeMode === 'ym' && !m.year) { ok = false; msgs.push('Choose the <b>Year</b> column.'); }
-    if (m.timeMode === 'date' && !m.date) { ok = false; msgs.push('Choose the <b>Date</b> column.'); }
+    if (!m.time) { ok = false; msgs.push('Choose the <b>Year or date</b> column.'); }
     if (m.layout === 'wide') { if (!m.wideCols.length) { ok = false; msgs.push('Select at least one <b>location column</b>.'); } }
     else if (!m.rain && !m.tmax && !m.tmin && !m.tavg) { ok = false; msgs.push('Choose at least one variable: rainfall or a temperature column.'); }
     if (!ok) { S.built = null; $('#mapStatus').innerHTML = notice('warn', msgs.join(' ')); afterBuild(); return; }
@@ -6084,6 +6081,22 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     ifr.srcdoc = html;
   }
 
+  /* ---------------- visitor counter ----------------
+     Counts each browser once (first visit = "hit", later visits only read the total).
+     Runs only when the site is served over http(s), e.g. GitHub Pages; it stays hidden
+     when the page is opened as a local file or when the counter service cannot be reached. */
+  function initVisitors() {
+    if (!/^https?:$/.test(location.protocol)) return;
+    const base = 'https://abacus.jasoncameron.dev', ns = 'icar-iasri-climate-anomaly', key = 'visitors';
+    let seen = false;
+    try { seen = localStorage.getItem('ca_counted') === '1'; } catch (e) { }
+    const show = n => { $('#visitorCount').textContent = Number(n).toLocaleString('en-IN'); $('#visitors').hidden = false; };
+    const get = path => fetch(`${base}/${path}/${ns}/${key}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject(r.status));
+    (seen ? get('get') : get('hit').then(j => { try { localStorage.setItem('ca_counted', '1'); } catch (e) { } return j; }))
+      .then(j => { if (j && isFinite(j.value)) show(j.value); })
+      .catch(() => { });
+  }
+
   /* ---------------- instructions page ---------------- */
   function renderClassTables() {
     const C = E.CLASS;
@@ -6164,10 +6177,11 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     $('#btnPrint').onclick = printReport;
     $$('#btnTemplate,[data-template]').forEach(b => b.onclick = () => saveFile('Climate_Anomaly_template.csv', templateCSV()));
     $('#missingCodes').onchange = () => rebuild();
-    Object.values(MAP_SELECTS).forEach(sel => $(sel).onchange = () => { if (S.map.layout === 'wide' && /Year|Month|Date/.test(sel)) { readMap(); renderWidePicker(); } rebuild(); });
-    $('#deriveTavg').onchange = () => rebuild();
-    $$('#timeMode button').forEach(b => b.onclick = () => { setTimeMode(b.dataset.v); if (S.map.layout === 'wide') { readMap(); renderWidePicker(); } rebuild(); });
-    $$('#layoutMode button').forEach(b => b.onclick = () => { setLayout(b.dataset.v); rebuild(); });
+    Object.values(MAP_SELECTS).forEach(sel => $(sel).onchange = () => {
+      applyMapUI();
+      if ($('#mapLoc').value === LOC_COLS && ['#mapLoc', '#mapTime', '#mapMonth'].includes(sel)) { readMap(); renderWidePicker(); }
+      rebuild();
+    });
     $('#wideVar').onchange = () => rebuild();
     $('#wideCols').addEventListener('change', () => { updateWideCount(); rebuild(); });
     $('#wideAll').onclick = () => { $$('#wideCols input').forEach(i => i.checked = true); updateWideCount(); rebuild(); };
@@ -6195,6 +6209,10 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
   route();
   loadSample(false);
   setPrintLabel();
+  initVisitors();
 })();
 
 </script>
+
+</body>
+</html>
