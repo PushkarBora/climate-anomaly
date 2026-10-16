@@ -6100,15 +6100,21 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
      Runs only when the site is served over http(s), e.g. GitHub Pages; it stays hidden
      when the page is opened as a local file or when the counter service cannot be reached. */
   function initVisitors() {
-    if (!/^https?:$/.test(location.protocol)) return;
+    // Not shown when opened as a local file or inside the Claude viewer (both block outside requests).
+    if (!/^https?:$/.test(location.protocol) || inViewer()) return;
     const base = 'https://abacus.jasoncameron.dev', ns = 'icar-iasri-climate-anomaly', key = 'visitors';
+    const box = $('#visitors'), out = $('#visitorCount');
+    out.textContent = '…'; box.hidden = false;
     let seen = false;
     try { seen = localStorage.getItem('ca_counted') === '1'; } catch (e) { }
-    const show = n => { $('#visitorCount').textContent = Number(n).toLocaleString('en-IN'); $('#visitors').hidden = false; };
-    const get = path => fetch(`${base}/${path}/${ns}/${key}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject(r.status));
-    (seen ? get('get') : get('hit').then(j => { try { localStorage.setItem('ca_counted', '1'); } catch (e) { } return j; }))
-      .then(j => { if (j && isFinite(j.value)) show(j.value); })
-      .catch(() => { });
+    const call = path => fetch(`${base}/${path}/${ns}/${key}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject(r.status));
+    const attempt = (n) => (seen ? call('get') : call('hit').then(j => { seen = true; try { localStorage.setItem('ca_counted', '1'); } catch (e) { } return j; }))
+      .then(j => { if (!j || !isFinite(j.value)) throw new Error('bad'); out.textContent = Number(j.value).toLocaleString('en-IN'); box.title = ''; })
+      .catch(() => {
+        if (n < 2) return setTimeout(() => attempt(n + 1), 2500);
+        out.textContent = 'not available'; box.title = 'The visitor counter could not be reached. A browser extension or privacy setting may be blocking it.';
+      });
+    attempt(0);
   }
 
   /* ---------------- instructions page ---------------- */
