@@ -229,7 +229,7 @@ main{min-height:60vh}
 .drop input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 @media (max-width:640px){.drop{grid-template-columns:auto 1fr}.drop .btn{grid-column:1/-1}}
 .row-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.field{display:grid;gap:6px;min-width:0}
+.field{display:grid;gap:6px;min-width:0;align-content:start}
 .field>label,.field>.lbl{font-size:13px;font-weight:600;color:var(--ink-2)}
 .field .hint{font-size:12px;color:var(--muted)}
 .field .req{color:var(--bad);font-weight:500}
@@ -719,12 +719,6 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
                   <div class="field"><label for="optDec">Decimal places in download</label><input type="number" id="optDec" min="0" max="8" value="4"></div>
                   <div class="field"><span class="lbl">SRAI range</span><label class="small" style="display:flex;gap:8px;align-items:center;font-weight:400;color:var(--ink-2);min-height:42px"><input type="checkbox" id="optClamp" checked style="accent-color:var(--accent)"> Clip SRAI to −3 … +3</label></div>
                 </div>
-                <div class="subhead">Class thresholds for deviations (symmetric about zero)</div>
-                <div class="grid-3">
-                  <div class="field"><label for="thrRdev">Rainfall deviation, data units</label><input type="text" id="thrRdev" value="20, 50, 100"><span class="hint">Slightly / Normal limit, Above-Below, Extremely</span></div>
-                  <div class="field"><label for="thrTdev">Temperature deviation, °C</label><input type="text" id="thrTdev" value="0.5, 1.5, 3"></div>
-                  <div class="field"><label for="thrTpct">Temperature % departure</label><input type="text" id="thrTpct" value="0.5, 2, 5"></div>
-                </div>
                 <label class="small" style="display:flex;gap:8px;align-items:center;color:var(--ink-2)"><input type="checkbox" id="optKeepAll" style="accent-color:var(--accent)"> Include every original column of my file in the download (only when each row is one month)</label>
               </div>
             </details>
@@ -860,7 +854,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
             <li><strong>Upload Data.</strong> Drop a file on the upload area or choose it. For an Excel workbook with several sheets, pick the sheet. A preview of the first rows appears. The sample dataset is loaded when the page opens, so you can try the model before using your own file.</li>
             <li><strong>Match Columns.</strong> Check the location column (or <em>Each location is a separate column</em>), the year or date column, the month column if there is one, and each variable. The summary underneath reports how many location-months were read, how many rows were skipped and whether daily rows were combined.</li>
             <li><strong>Baseline Period.</strong> Choose the reference years for rainfall and for temperature (see below).</li>
-            <li><strong>Indices.</strong> Tick the indices you need and, if required, open Advanced settings to change the number of RAI extremes, the minimum baseline size, the deviation class thresholds or the number of decimals. Press <strong>Compute indices</strong>.</li>
+            <li><strong>Indices.</strong> Tick the indices you need and, if required, open Advanced settings to change the number of RAI extremes, the minimum baseline size or the number of decimals. Press <strong>Compute indices</strong>.</li>
             <li><strong>Results.</strong> The results open on their own page. Use the Location, Month and Index filters to explore the chart, the class frequencies, the baseline climatology and the full table.</li>
             <li><strong>Download or print.</strong> <em>Download results</em> gives one CSV row per location-month with every index and class; <em>Climatology</em> gives the baseline mean, SD and number of years for each location-month; <em>Print report</em> prints the selected location (settings, chart, classes, climatology and table) or saves it as PDF. Use <em>Back to the model</em> to change settings and compute again.</li>
           </ol>
@@ -951,7 +945,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
             <div class="tbl-wrap"><table class="cls-table"><thead><tr><th>Rainfall % departure (IMD)</th><th>Class</th></tr></thead><tbody id="clsImd"></tbody></table></div>
             <div class="tbl-wrap"><table class="cls-table"><thead><tr><th>Temperature z</th><th>Class</th></tr></thead><tbody id="clsTemp"></tbody></table></div>
           </div>
-          <p>Deviation classes (rainfall in data units, temperature in °C) and temperature percentage classes use three symmetric thresholds that you can change in Advanced settings. Defaults: rainfall ±20, ±50, ±100; temperature deviation ±0.5, ±1.5, ±3 °C; temperature departure ±0.5, ±2, ±5 %.</p>
+          <p>Deviation classes (rainfall in data units, temperature in °C) and temperature percentage classes use fixed thresholds, symmetric about zero: rainfall deviation ±20, ±50, ±100; temperature deviation ±0.5, ±1.5, ±3 °C; temperature departure ±0.5, ±2, ±5 %.</p>
         </section>
 
         <section id="s-output">
@@ -5596,11 +5590,7 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     }
     $$('.checks input').forEach(i => i.onchange = () => { checkState[i.dataset.k] = i.checked; markStale(); updateSteps(); });
   }
-  function readThr(id) {
-    const v = $(id).value.split(/[,;\s]+/).map(Number).filter(x => isFinite(x));
-    if (v.length !== 3 || !(v[0] > 0 && v[0] < v[1] && v[1] < v[2])) return null;
-    return v;
-  }
+
 
   /* ---------------- tabs ---------------- */
   let curTab = 1;
@@ -5651,10 +5641,8 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
   }
   function run(go) {
     if (!S.built) return;
-    const thr = { rdev: readThr('#thrRdev'), tdev: readThr('#thrTdev'), tpct: readThr('#thrTpct') };
-    for (const [k, id] of [['rdev', 'Rainfall deviation'], ['tdev', 'Temperature deviation'], ['tpct', 'Temperature % departure']]) {
-      if (!thr[k]) { $('#runStatus').innerHTML = `<b>Check the ${id} thresholds</b> in Advanced settings: three increasing positive numbers, e.g. 20, 50, 100.`; $('details.adv').open = true; return; }
-    }
+    // fixed class thresholds for deviations and temperature % departure (symmetric about zero)
+    const thr = { rdev: [20, 50, 100], tdev: [0.5, 1.5, 3], tpct: [0.5, 2, 5] };
     const idx = {}; Object.keys(checkState).forEach(k => idx[k] = !!checkState[k]);
     const rb = resolveBase('rain'), tb = resolveBase('temp');
     const opts = {
@@ -6206,7 +6194,7 @@ const HERO = {"1976":-25.9,"1977":-4.5,"1978":17.9,"1979":3.7,"1980":19.1,"1981"
     $('#wideCols').addEventListener('change', () => { updateWideCount(); rebuild(); });
     $('#wideAll').onclick = () => { $$('#wideCols input').forEach(i => i.checked = true); updateWideCount(); rebuild(); };
     $('#wideNone').onclick = () => { $$('#wideCols input').forEach(i => i.checked = false); updateWideCount(); rebuild(); };
-    ['#optNExt', '#optMinBase', '#optDec', '#optClamp', '#thrRdev', '#thrTdev', '#thrTpct', '#optKeepAll'].forEach(id => $(id).addEventListener('change', markStale));
+    ['#optNExt', '#optMinBase', '#optDec', '#optClamp', '#optKeepAll'].forEach(id => $(id).addEventListener('change', markStale));
     $('#btnRun').onclick = () => run(true);
     $('#fLoc').onchange = e => { S.view.loc = e.target.value; S.view.page = 0; renderView(); };
     $('#fMonth').onchange = e => { S.view.month = e.target.value; S.view.page = 0; renderView(); };
